@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="player"></div>
+    <script>
+        let map = document.body;
+        let player = document.querySelector("#player");
+        map.style.width = "100vw";
+        map.style.height = "100vh";
+        player.style.position = "absolute";
+        map.addEventListener("mousemove", function(event) {
+            player.style.top = event.clientY.toString() + "px";
+            player.style.left = event.clientX.toString() + "px";
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        @keyframes idle {
+            0% {
+                background-position: -58px -52px;
+            }
+            16.7% {
+                background-position: -130px -52px;
+            }
+            33.3% {
+                background-position: -206px -52px;
+            }
+            50% {
+                background-position: -282px -52px;
+            }
+            66.6% {
+                background-position: -358px -52px;
+            }
+            83.3% {
+                background-position: -434px -52px;
+            }
+            100% {
+                background-position: -60px -52px;
+            }
+        }
+        
+        @keyframes droite {
+            0% {
+                -moz-transform: scale(1, 1);
+                -webkit-transform: scale(1, 1);
+                -o-transform: scale(1, 1);
+                -ms-transform: scale(1, 1);
+                transform: scale(1, 1);
+                background-position: -58px -205px;
+            }
+            16.7% {
+                background-position: -130px -205px;
+            }
+            33.3% {
+                background-position: -206px -205px;
+            }
+            50% {
+                background-position: -282px -205px;
+            }
+            66.6% {
+                background-position: -358px -205px;
+            }
+            83.3% {
+                background-position: -434px -205px;
+            }
+            100% {
+                background-position: -60px -205px;
+            }
+        }
+        
+        @keyframes gauche {
+            0% {
+                -moz-transform: scale(-1, 1);
+                -webkit-transform: scale(-1, 1);
+                -o-transform: scale(-1, 1);
+                -ms-transform: scale(-1, 1);
+                transform: scale(-1, 1);
+                background-position: -58px -205px;
+            }
+            16.7% {
+                background-position: -130px -205px;
+            }
+            33.3% {
+                background-position: -206px -205px;
+            }
+            50% {
+                background-position: -282px -205px;
+            }
+            66.6% {
+                background-position: -358px -205px;
+            }
+            83.3% {
+                background-position: -434px -205px;
+            }
+            100% {
+                background-position: -60px -205px;
+            }
+        }
+        
+        #player {
+            width: 70px;
+            height: 75px;
+            background: url("img/cat_sprite.png");
+            background-position: -60px -205px;
+            animation: droite 1s steps(1) infinite;
+        }
+    </style>
+    <title>cat mouv</title>
+</head>
+
+<body>
+    <div id="player"></div>
+    <img id="coffre" src="img/coffre_close.png" alt="coffre">
+    <script>
+        let player = {
+            elem: document.querySelector("#player"),
+            speed: 5,
+            pos: {
+                x: 0,
+                y: 0
+            }
+        }
+        let coffre = {
+            elem: document.querySelector("#coffre"),
+            x: 300,
+            y: 400,
+        };
+        let map = document.body;
+        let cursor = {
+            x: 0,
+            y: 0
+        };
+        map.style.width = "100vw";
+        map.style.height = "100vh";
+        map.style.background = 'url("img/map.jpg")'
+        map.style.backgroundSize = '100%';
+        player.elem.style.position = "absolute";
+        coffre.elem.style.position = "absolute";
+        coffre.elem.style.top = coffre.y.toString() + "px";
+        coffre.elem.style.left = coffre.x.toString() + "px";
+        coffre.elem.style.width = "60px";
+        coffre.elem.style.height = "60px";
+
+        addEventListener("keypress", function(event) {
+            cursor.x = player.pos.x;
+            cursor.y = player.pos.y;
+
+            if (event.key == 'q') {
+                cursor.x -= 15;
+            }
+            if (event.key == 'd') {
+                cursor.x += 15;
+            }
+            if (event.key == 's') {
+                cursor.y += 15;
+            }
+            if (event.key == 'z') {
+                cursor.y -= 15;
+            }
+        });
+
+        setInterval(function() {
+            if (!(Math.abs(player.pos.x - cursor.x) > 10 || Math.abs(player.pos.y - cursor.y) > 10)) {
+                player.elem.style.animation = "idle 1s steps(1) infinite";
+            } else if (player.pos.x < cursor.x) {
+                player.elem.style.animation = "droite 1s steps(1) infinite";
+            } else {
+                player.elem.style.animation = "gauche 1s steps(1) infinite";
+            }
+            norme = Math.sqrt(Math.pow(cursor.x - player.pos.x, 2) + Math.pow(cursor.y - player.pos.y, 2));
+            if (norme != 0 && (Math.abs(player.pos.x - cursor.x) > 10 || Math.abs(player.pos.y - cursor.y) > 10)) {
+                player.pos.x += ((cursor.x - player.pos.x) / norme) * player.speed;
+                player.pos.y += ((cursor.y - player.pos.y) / norme) * player.speed;
+            }
+            if (player.pos.x > coffre.x - 20 && player.pos.x < coffre.x + 20 &&
+                player.pos.y > coffre.y - 20 && player.pos.y < coffre.y + 20) {
+                coffre.elem.src = "img/coffre_open.png";
+            } else {
+                coffre.elem.src = "img/coffre_close.png";
+            }
+            player.elem.style.left = player.pos.x + "px";
+            player.elem.style.top = player.pos.y + "px";
+        }, 50);
+
+        map.addEventListener("click", function(event) {
+            cursor.x = event.clientX;
+            cursor.y = event.clientY;
+        });
+    </script>
+</body>
+
+</html>
