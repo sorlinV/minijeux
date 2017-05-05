@@ -123,7 +123,7 @@
         };
         map.style.width = "100vw";
         map.style.height = "100vh";
-        map.style.background = 'url("img/map.jpg")'
+        map.style.background = "url('img/map.jpg')";
         map.style.backgroundSize = '100%';
         player.elem.style.position = "absolute";
         coffre.elem.style.position = "absolute";
@@ -132,21 +132,21 @@
         coffre.elem.style.width = "60px";
         coffre.elem.style.height = "60px";
 
-        addEventListener("keypress", function(event) {
+        addEventListener("keydown", function(event) {
             cursor.x = player.pos.x;
             cursor.y = player.pos.y;
 
             if (event.key == 'q') {
-                cursor.x -= 15;
+                cursor.x -= 30;
             }
             if (event.key == 'd') {
-                cursor.x += 15;
+                cursor.x += 30;
             }
             if (event.key == 's') {
-                cursor.y += 15;
+                cursor.y += 30;
             }
             if (event.key == 'z') {
-                cursor.y -= 15;
+                cursor.y -= 30;
             }
         });
 
