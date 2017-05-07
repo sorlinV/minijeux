@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Labyrinth</title>
+    <style>
+        .coll {
+            position: absolute;
+            background: red url('img/coffre_open.png');
+            width: 50px;
+            height: 50px;
+        }
+        
+        #a {
+            background: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="player"><img src="img/cat.png" alt=""></div>
+    <div class="coll" id="a"></div>
+    <div class="coll" id="b"></div>
+    <div class="coll" id="c"></div>
+    <div class="coll" id="d"></div>
+    <div class="coll" id="e"></div>
+    <div class="coll" id="f"></div>
+    <div class="coll" id="g"></div>
+    <div class="coll" id="h"></div>
+    <div class="coll" id="i"></div>
+    <div class="coll" id="j"></div>
+    <div class="coll" id="k"></div>
+    <script>
+        let player = {
+            elem: document.querySelector("#player"),
+            pos: {
+                x: 0,
+                y: 0,
+                w: 0,
+                h: 0
+            },
+            n_pos: {
+                x: 0,
+                y: 0,
+                w: 0,
+                h: 0
+            },
+            dir: {
+                x: 0,
+                y: 0
+            }
+        }
+        player.elem.style.position = "absolute";
+        let coll = document.querySelectorAll(".coll");
+        for (let i = 0; i < coll.length; i++) {
+            coll[i].style.left = (Math.random() * (window.innerWidth - coll[i].clientWidth)) + "px";
+            coll[i].style.top = (Math.random() * (window.innerHeight - coll[i].clientHeight)) + "px";
+        }
+
+        function collision(box1, box2) {
+            if ((box2.x >= box1.x + box1.w) || (box2.x + box2.w <= box1.x) || (box2.y >= box1.y + box1.h) || (box2.y + box2.h <= box1.y))
+                return false;
+            else
+                return true;
+        }
+
+        function verif_all_coll() {
+            let coll = document.querySelectorAll(".coll");
+            for (let i = 0; i < coll.length; i++) {
+                let actual_coll = {
+                    x: coll[i].getBoundingClientRect().left,
+                    y: coll[i].getBoundingClientRect().top,
+                    w: coll[i].clientWidth,
+                    h: coll[i].clientHeight
+                }
+                if (collision(player.n_pos, actual_coll) == true) {
+                    if (coll[i].id == 'a') {
+                        player.elem.remove();
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        document.addEventListener("keypress", function(e) {
+            if (e.key == 'q') {
+                player.dir.x = -10;
+            }
+            if (e.key == 'd') {
+                player.dir.x = 10;
+            }
+            if (e.key == 'z') {
+                player.dir.y = -10;
+            }
+            if (e.key == 's') {
+                player.dir.y = 10;
+            }
+        });
+
+        setInterval(function() {
+            if (!document.querySelector("#player")) {
+                alert("Vous etes mort(e)\nf5 pour rejouez");
+            } else {
+                player.n_pos.x = player.pos.x + player.dir.x;
+                player.n_pos.y = player.pos.y + player.dir.y;
+                player.n_pos.w = document.querySelector("#player").clientWidth;
+                player.n_pos.h = document.querySelector("#player").clientHeight;
+                if (!verif_all_coll()) {
+                    player.pos.x = player.n_pos.x;
+                    player.pos.y = player.n_pos.y;
+                    player.pos.w = player.n_pos.w;
+                    player.pos.h = player.n_pos.h;
+                }
+                player.elem.style.left = player.pos.x + "px";
+                player.elem.style.top = player.pos.y + "px";
+                player.dir.x = 0;
+                player.dir.y = 0;
+            }
+        }, 100)
+    </script>
+
+</body>
+
+</html>
