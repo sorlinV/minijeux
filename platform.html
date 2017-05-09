@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        @keyframes idle {
+            0% {
+                background-position: -58px -52px;
+            }
+            16.7% {
+                background-position: -130px -52px;
+            }
+            33.3% {
+                background-position: -206px -52px;
+            }
+            50% {
+                background-position: -282px -52px;
+            }
+            66.6% {
+                background-position: -358px -52px;
+            }
+            83.3% {
+                background-position: -434px -52px;
+            }
+            100% {
+                background-position: -60px -52px;
+            }
+        }
+        
+        @keyframes droite {
+            0% {
+                -moz-transform: scale(1, 1);
+                -webkit-transform: scale(1, 1);
+                -o-transform: scale(1, 1);
+                -ms-transform: scale(1, 1);
+                transform: scale(1, 1);
+                background-position: -58px -205px;
+            }
+            16.7% {
+                background-position: -130px -205px;
+            }
+            33.3% {
+                background-position: -206px -205px;
+            }
+            50% {
+                background-position: -282px -205px;
+            }
+            66.6% {
+                background-position: -358px -205px;
+            }
+            83.3% {
+                background-position: -434px -205px;
+            }
+            100% {
+                background-position: -60px -205px;
+            }
+        }
+        
+        @keyframes gauche {
+            0% {
+                -moz-transform: scale(-1, 1);
+                -webkit-transform: scale(-1, 1);
+                -o-transform: scale(-1, 1);
+                -ms-transform: scale(-1, 1);
+                transform: scale(-1, 1);
+                background-position: -58px -205px;
+            }
+            16.7% {
+                background-position: -130px -205px;
+            }
+            33.3% {
+                background-position: -206px -205px;
+            }
+            50% {
+                background-position: -282px -205px;
+            }
+            66.6% {
+                background-position: -358px -205px;
+            }
+            83.3% {
+                background-position: -434px -205px;
+            }
+            100% {
+                background-position: -60px -205px;
+            }
+        }
+        
+        #player {
+            width: 70px;
+            height: 75px;
+            background: url("img/cat_sprite.png");
+            background-position: -60px -205px;
+            animation: droite 1s steps(1) infinite;
+        }
+    </style>
+    <title>cat mouv</title>
+</head>
+
+<body>
+    <div id="player"></div>
+    <script>
+        let player = {
+            elem: document.querySelector("#player"),
+            speed: 5,
+            pos: {
+                x: 0,
+                y: 0
+            },
+            dir: {
+                x: 0,
+                y: 0
+            },
+            size: {
+                width: document.querySelector("#player").clientWidth,
+                height: document.querySelector("#player").clientHeight
+            }
+        }
+        let keyEnum = {
+            z: false,
+            q: false,
+            d: false
+        };
+        let map = document.body;
+        map.style.width = "100vw";
+        map.style.height = "100vh";
+        map.style.background = "url('img/map.jpg')";
+        map.style.backgroundSize = '100%';
+        player.elem.style.position = "absolute";
+        let is_falling = true;
+
+        document.addEventListener("keypressed", function(event) {
+            if (event.key == 'q') {
+                player.dir.x = -5;
+            }
+            if (event.key == 'd') {
+                player.dir.x = 5;
+            }
+            if (event.key == 'z' && is_falling == false) {
+                player.dir.y = -15;
+            }
+        });
+
+        setInterval(function() {
+            if (player.pos.y < 400 || player.dir.y == -15) {
+                is_falling = true;
+                player.dir.y += 1;
+            } else {
+                is_falling = false;
+                player.dir.y = 0;
+            }
+            player.pos.x += player.dir.x;
+            player.pos.y += player.dir.y;
+            player.elem.style.left = player.pos.x + "px";
+            player.elem.style.top = player.pos.y + "px";
+            player.dir.x = 0;
+        }, 100);
+    </script>
+</body>
+
+</html>
