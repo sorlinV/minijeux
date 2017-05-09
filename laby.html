@@ -86,7 +86,7 @@
             return false;
         }
 
-        document.addEventListener("keypress", function(e) {
+        document.addEventListener("keydown", function(e) {
             if (e.key == 'q') {
                 player.dir.x = -10;
             }
@@ -101,6 +101,20 @@
             }
         });
 
+        document.addEventListener("keyup", function(e) {
+            if (e.key == 'q') {
+                player.dir.x = 0;
+            }
+            if (e.key == 'd') {
+                player.dir.x = 0;
+            }
+            if (e.key == 'z') {
+                player.dir.y = 0;
+            }
+            if (e.key == 's') {
+                player.dir.y = 0;
+            }
+        });
         setInterval(function() {
             if (!document.querySelector("#player")) {
                 alert("Vous etes mort(e)\nf5 pour rejouez");
@@ -117,8 +131,6 @@
                 }
                 player.elem.style.left = player.pos.x + "px";
                 player.elem.style.top = player.pos.y + "px";
-                player.dir.x = 0;
-                player.dir.y = 0;
             }
         }, 100)
     </script>
