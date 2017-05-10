@@ -21,10 +21,7 @@
 </head>
 
 <body>
-
-
     <div id="player"><img src="img/cat.png" alt=""></div>
-    <p>A</p>
     <div class="coll" id="a"></div>
     <div class="coll" id="b"></div>
     <div class="coll" id="c"></div>
@@ -70,9 +67,8 @@
                 return true;
         }
 
-        function verif_all_coll(to_verif) {
+        function verif_all_coll() {
             let coll = document.querySelectorAll(".coll");
-            let object_coll = new Array();
             for (let i = 0; i < coll.length; i++) {
                 let actual_coll = {
                     x: coll[i].getBoundingClientRect().left,
@@ -80,46 +76,29 @@
                     w: coll[i].clientWidth,
                     h: coll[i].clientHeight
                 }
-                if (collision(to_verif, actual_coll) == true) {
-                    object_coll.push(coll[i]);
+                if (collision(player.n_pos, actual_coll) == true) {
+                    if (coll[i].id == 'a') {
+                        player.elem.remove();
+                    }
+                    return true;
                 }
-            }
-            if (object_coll[0] != undefined) {
-                return object_coll;
             }
             return false;
         }
-
-        // function is_on() {
-        //     let object_coll;
-        //     below = {
-        //         x: player.pos.x + (player.pos.w / 2),
-        //         y: player.pos.y + player.pos.h + 1,
-        //         w: 1,
-        //         h: 1,
-        //     }
-        //     if ((object_coll = verif_all_coll(below)) == false) {
-        //         return false;
-        //     } else {
-        //         return object_coll;
-        //     }
-        // }
-
         document.addEventListener("keydown", function(e) {
             if (e.key == 'q') {
-                player.dir.x = -1;
+                player.dir.x = -10;
             }
             if (e.key == 'd') {
-                player.dir.x = 1;
+                player.dir.x = 10;
             }
             if (e.key == 'z') {
-                player.dir.y = -1;
+                player.dir.y = -10;
             }
             if (e.key == 's') {
-                player.dir.y = 1;
+                player.dir.y = 10;
             }
         });
-
         document.addEventListener("keyup", function(e) {
             if (e.key == 'q') {
                 player.dir.x = 0;
@@ -135,18 +114,7 @@
             }
         });
 
-        // setInterval(function() {
-        //     let object_coll;
-        //     player.n_pos.x = player.pos.x + player.dir.x;
-        //     player.n_pos.y = player.pos.y + player.dir.y;
-        //     player.n_pos.w = document.querySelector("#player").clientWidth;
-        //     player.n_pos.h = document.querySelector("#player").clientHeight;
-
-        //     move_to();
-        // }, 100);
-
         setInterval(function() {
-            let object_coll;
             if (!document.querySelector("#player")) {
                 alert("Vous etes mort(e)\nf5 pour rejouez");
             } else {
@@ -154,20 +122,16 @@
                 player.n_pos.y = player.pos.y + player.dir.y;
                 player.n_pos.w = document.querySelector("#player").clientWidth;
                 player.n_pos.h = document.querySelector("#player").clientHeight;
-                if ((object_coll = verif_all_coll(player.n_pos)) == false) {
+                if (!verif_all_coll()) {
                     player.pos.x = player.n_pos.x;
                     player.pos.y = player.n_pos.y;
                     player.pos.w = player.n_pos.w;
                     player.pos.h = player.n_pos.h;
-                } else {
-                    for (let i = 0; i < object_coll.length; i++) {
-                        document.querySelector('p').textContent += object_coll[i].id + "\n";
-                    }
                 }
                 player.elem.style.left = player.pos.x + "px";
                 player.elem.style.top = player.pos.y + "px";
             }
-        }, 10)
+        }, 100)
     </script>
 
 </body>
